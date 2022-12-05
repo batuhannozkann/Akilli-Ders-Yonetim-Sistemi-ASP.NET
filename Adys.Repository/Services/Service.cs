@@ -16,6 +16,13 @@ namespace Adys.Repository.Services
     {
         private readonly IGenericRepository<T> _genericRepository;
         private readonly IUnitOfWork _unitOfWork;
+
+        public Service(IGenericRepository<T> genericRepository, IUnitOfWork unitOfWork)
+        {
+            _genericRepository = genericRepository;
+            _unitOfWork = unitOfWork;
+        }
+
         public async Task<T> AddAsync(T entity)
         {
             await _genericRepository.AddAsync(entity);

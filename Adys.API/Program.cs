@@ -5,6 +5,7 @@ using Adys.Repository.Contexts;
 using Adys.Repository.Repositories;
 using Adys.Repository.Services;
 using Adys.Repository.UnitOfWork;
+using Adys.Service.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddDbContext<AdysAppContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"), option =>

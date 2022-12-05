@@ -19,7 +19,6 @@ namespace Adys.Repository.Configurations
             builder
                 .HasOne(h => h.Academician)
                 .WithMany(m => m.Lessons);
-
         }
     }
 }

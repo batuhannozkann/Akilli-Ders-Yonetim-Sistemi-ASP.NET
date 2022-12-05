@@ -4,15 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Core.Entities
+namespace Adys.Core.DTOs
 {
-    public class Lesson : BaseEntity
+    public class LessonDto:BaseDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string LessonCode { get; set; }
         public int AcademicianId { get; set; }
-        public Academician Academician { get; set; }
-        public ICollection<LessonStudent> Students { get; set; }
+        public string LessonCode { get; set; }
     }
 }
