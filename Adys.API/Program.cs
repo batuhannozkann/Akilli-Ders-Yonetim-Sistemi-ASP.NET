@@ -20,6 +20,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+builder.Services.AddScoped<ILessonService, LessonService>();
+builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddDbContext<AdysAppContext>(x =>
 {
