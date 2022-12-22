@@ -11,10 +11,10 @@ namespace Adys.API.Controllers
     [ApiController]
     public class AcademiciansController : BaseController
     {
-        private readonly IService<Academician> _service;
         private readonly IMapper _mapper;
+        private readonly IAcademicianService _service;
 
-        public AcademiciansController(IService<Academician> service, IMapper mapper)
+        public AcademiciansController(IAcademicianService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -34,6 +34,11 @@ namespace Adys.API.Controllers
             var addedAcademician = await _service.AddAsync(Academician);
             var addedAcademicianDto = _mapper.Map<AcademicianDto>(addedAcademician);
             return CreateActionResult<AcademicianDto>(CustomResponseDto<AcademicianDto>.Succes(201, data: addedAcademicianDto));
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLessonsOfAcademician()
+        {
+            return CreateActionResult<List<LessonsOfAcademicianDto>>(await _service.GetLessonsOfAcademician());
         }
     }
 }

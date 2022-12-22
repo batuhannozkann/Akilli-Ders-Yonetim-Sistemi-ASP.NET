@@ -6,6 +6,7 @@ using Adys.Repository.Repositories;
 using Adys.Repository.Services;
 using Adys.Repository.UnitOfWork;
 using Adys.Service.Mapping;
+using Adys.SharedLibrary.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -17,12 +18,23 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<IAcademicianService, AcademicianService>();
+builder.Services.AddScoped<IAcademicianRepository, AcademicianRepository>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
+builder.Services.AddDbContext<IdentityContext>(x =>
+{
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"), option =>
+    {
+        option.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityContext)).GetName().Name);
+    });
+
+});
 builder.Services.AddDbContext<AdysAppContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"), option =>
@@ -31,6 +43,7 @@ builder.Services.AddDbContext<AdysAppContext>(x =>
     });
 }
 );
+
 
 var app = builder.Build();
 

@@ -10,15 +10,13 @@ namespace Adys.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class LessonsController : BaseController
-    {
-        private readonly IService<Lesson> _service;
+    { 
         private readonly IMapper _mapper;
-        private readonly ILessonService _lessonService;
-        public LessonsController(IService<Lesson> service, IMapper mapper, ILessonService lessonService)
+        private readonly ILessonService _service;
+        public LessonsController(IMapper mapper, ILessonService lessonService)
         {
-            _service = service;
             _mapper = mapper;
-            _lessonService = lessonService;
+            _service = lessonService;
         }
         [HttpGet]
         public async Task<IActionResult> All()
@@ -30,7 +28,7 @@ namespace Adys.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> LessonsWithAcademician()
         {
-            return CreateActionResult<List<LessonWithAcademicianDto>>(await _lessonService.GetLessonsWithAcademician());
+            return CreateActionResult<List<LessonWithAcademicianDto>>(await _service.GetLessonsWithAcademician());
         }
         [HttpPost]
         public async Task<IActionResult> Add(LessonDto lessonDto)

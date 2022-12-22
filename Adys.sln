@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.Core", "Adys.Core\Adys.Core.csproj", "{E178AC3E-7AB2-4C03-A557-671906CC34C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adys.Core", "Adys.Core\Adys.Core.csproj", "{E178AC3E-7AB2-4C03-A557-671906CC34C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.Repository", "Adys.Repository\Adys.Repository.csproj", "{27DF926A-9389-4182-8180-7D9AF9DA0690}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adys.Repository", "Adys.Repository\Adys.Repository.csproj", "{27DF926A-9389-4182-8180-7D9AF9DA0690}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.Service", "Adys.Service\Adys.Service.csproj", "{91CA37A4-4CCD-4886-B2B3-6B43D8777C19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adys.Service", "Adys.Service\Adys.Service.csproj", "{91CA37A4-4CCD-4886-B2B3-6B43D8777C19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.Web", "Adys.Web\Adys.Web.csproj", "{8BCD2258-6473-4830-990D-9558A44529F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adys.Web", "Adys.Web\Adys.Web.csproj", "{8BCD2258-6473-4830-990D-9558A44529F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.API", "Adys.API\Adys.API.csproj", "{DA48CBB6-02E7-4E65-8571-5ED691572EB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adys.API", "Adys.API\Adys.API.csproj", "{DA48CBB6-02E7-4E65-8571-5ED691572EB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.Caching", "Adys.Caching\Adys.Caching.csproj", "{EFA5B21C-FC69-415F-9CBB-10CC61360642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adys.Caching", "Adys.Caching\Adys.Caching.csproj", "{EFA5B21C-FC69-415F-9CBB-10CC61360642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adys.SharedLibrary", "Adys.SharedLibrary\Adys.SharedLibrary.csproj", "{3D2ABDB3-C1A2-412E-AE57-B6388F17FF65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{EFA5B21C-FC69-415F-9CBB-10CC61360642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA5B21C-FC69-415F-9CBB-10CC61360642}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFA5B21C-FC69-415F-9CBB-10CC61360642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D2ABDB3-C1A2-412E-AE57-B6388F17FF65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D2ABDB3-C1A2-412E-AE57-B6388F17FF65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D2ABDB3-C1A2-412E-AE57-B6388F17FF65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D2ABDB3-C1A2-412E-AE57-B6388F17FF65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
