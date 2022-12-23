@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Services
+namespace Adys.Service.Services
 {
     public class Service<T> : IService<T>
         where T : class
