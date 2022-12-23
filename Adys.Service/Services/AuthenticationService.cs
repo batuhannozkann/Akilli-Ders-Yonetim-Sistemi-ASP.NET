@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Services
+namespace Adys.Service.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -36,20 +36,21 @@ namespace Adys.Repository.Services
 
         public async Task<CustomResponseDto<TokenDto>> CreateTokenAsync(LoginDto loginDto)
         {
-            if(loginDto == null) throw new ArgumentNullException(nameof(loginDto));
+            if (loginDto == null) throw new ArgumentNullException(nameof(loginDto));
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if(user == null) return CustomResponseDto<TokenDto>.Fail(statusCode:400,errors: new List<string>() { "Email or Password is wrong" });
-            if (!await _userManager.CheckPasswordAsync(user, loginDto.Password)) return CustomResponseDto<TokenDto>.Fail(statusCode:400, errors: new List<string>() { "Email or Password is wrong" });
+            if (user == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 400, errors: new List<string>() { "Email or Password is wrong" });
+            if (!await _userManager.CheckPasswordAsync(user, loginDto.Password)) return CustomResponseDto<TokenDto>.Fail(statusCode: 400, errors: new List<string>() { "Email or Password is wrong" });
             var token = _tokenService.CreateToken(user);
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
             if (userRefreshToken == null) await _userRefreshTokenService.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.RefreshTokenExpiration });
-            else {
-                    userRefreshToken.Code = token.RefreshToken;
-                    userRefreshToken.Expiration = token.RefreshTokenExpiration;
-                 }
-            await _unitOfWork.CommitAsync();  
+            else
+            {
+                userRefreshToken.Code = token.RefreshToken;
+                userRefreshToken.Expiration = token.RefreshTokenExpiration;
+            }
+            await _unitOfWork.CommitAsync();
             return CustomResponseDto<TokenDto>.Succes(statusCode: 200, data: token);
-        }   
+        }
 
         public Task<CustomResponseDto<ClientTokenDto>> CreateTokenByClient(ClientLoginDto clientLoginDto)
         {
@@ -61,7 +62,7 @@ namespace Adys.Repository.Services
             var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
             if (existRefreshToken == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "Refresh token not found" });
             var user = await _userManager.FindByIdAsync(existRefreshToken.UserId);
-            if(user==null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "UserId not found" });
+            if (user == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "UserId not found" });
             var tokenDto = _tokenService.CreateToken(user);
             existRefreshToken.Code = tokenDto.RefreshToken;
             existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration;

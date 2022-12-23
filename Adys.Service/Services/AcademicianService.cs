@@ -10,14 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Services
+namespace Adys.Service.Services
 {
-    public class AcademicianService : Service<Academician>,IAcademicianService
+    public class AcademicianService : Service<Academician>, IAcademicianService
     {
         private readonly IAcademicianRepository _academicianRepository;
         IMapper _mapper;
 
-        public AcademicianService(IUnitOfWork unitOfWork, IAcademicianRepository academicianRepository, IMapper mapper,IGenericRepository<Academician> repository) : base(repository,unitOfWork)
+        public AcademicianService(IUnitOfWork unitOfWork, IAcademicianRepository academicianRepository, IMapper mapper, IGenericRepository<Academician> repository) : base(repository, unitOfWork)
         {
             _mapper = mapper;
             _academicianRepository = academicianRepository;
