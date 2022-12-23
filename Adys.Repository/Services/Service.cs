@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Adys.Repository.Services
 {
-    public class Service<T> : IService<T>
+    public class Service<T> : Core.Services.IGenericRepository<T>
         where T : class
     {
-        private readonly IGenericRepository<T> _genericRepository;
+        private readonly Core.Repositories.IGenericRepository<T> _genericRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public Service(IGenericRepository<T> genericRepository, IUnitOfWork unitOfWork)
+        public Service(Core.Repositories.IGenericRepository<T> genericRepository, IUnitOfWork unitOfWork)
         {
             _genericRepository = genericRepository;
             _unitOfWork = unitOfWork;

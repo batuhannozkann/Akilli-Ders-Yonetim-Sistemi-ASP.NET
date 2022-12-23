@@ -1,3 +1,4 @@
+using Adys.Core.Configuration;
 using Adys.Core.Repositories;
 using Adys.Core.Services;
 using Adys.Core.UnitOfWork;
@@ -18,10 +19,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
+builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
+builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+builder.Services.AddScoped(typeof(Adys.Core.Repositories.IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(Adys.Core.Services.IGenericRepository<>), typeof(Service<>));
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IAcademicianService, AcademicianService>();
@@ -53,7 +55,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -61,3 +62,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

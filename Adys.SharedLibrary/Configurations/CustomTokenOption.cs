@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Adys.SharedLibrary.Configurations
 {
-    public class CustomTokenOptions
+    public class CustomTokenOption
     {
         public List<String> Audience { get; set; }
         public string Issuer { get; set; }

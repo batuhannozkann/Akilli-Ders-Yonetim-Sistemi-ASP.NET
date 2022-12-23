@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Adys.Core\Adys.Core.csproj" />
+    <ProjectReference Include="..\Adys.SharedLibrary\Adys.SharedLibrary.csproj" />
   </ItemGroup>
 
 </Project>
