@@ -3,7 +3,6 @@ using Adys.Core.DTOs;
 using Adys.Core.Identity;
 using Adys.Core.Identity.DTOs;
 using Adys.Core.Identity.Service;
-using Adys.Core.Repositories;
 using Adys.Core.Services;
 using Adys.Core.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
@@ -72,8 +71,8 @@ namespace Adys.Repository.Services
         public async Task<CustomNoResponseDto> RevokeRefreshToken(string refreshToken)
         {
             var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
-            if (existRefreshToken == null) return CustomNoResponseDto.Fail(statusCode: 404, errors: new List<string> { "Refresh token not found" });
-            _userRefreshTokenService.Remove(existRefreshToken);
+            if (existRefreshToken == null) return CustomNoResponseDto.Fail(statusCode: 404, errors: new List<string> { "Refresh token not found" );
+            await _userRefreshTokenService.RemoveAsync(existRefreshToken);
             return CustomNoResponseDto.Succes(statusCode: 200);
         }
     }

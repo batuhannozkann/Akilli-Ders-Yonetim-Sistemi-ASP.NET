@@ -17,10 +17,11 @@ namespace Adys.Repository.Services
         private readonly IAcademicianRepository _academicianRepository;
         IMapper _mapper;
 
-        public AcademicianService(IUnitOfWork unitOfWork, IAcademicianRepository academicianRepository, IMapper mapper,IGenericRepository<Academician> repository) : base(repository,unitOfWork)
+        public AcademicianService(IGenericRepository<Academician> genericRepository, IUnitOfWork unitOfWork, IAcademicianRepository academicianRepository, IMapper mapper) : base(genericRepository, unitOfWork)
         {
             _mapper = mapper;
             _academicianRepository = academicianRepository;
+
         }
 
         public async Task<CustomResponseDto<List<LessonsOfAcademicianDto>>> GetLessonsOfAcademician()

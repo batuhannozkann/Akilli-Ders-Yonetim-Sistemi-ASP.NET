@@ -1,7 +1,5 @@
 ﻿using Adys.Core.DTOs;
 using Adys.Core.Entities;
-using Adys.Core.Identity;
-using Adys.Core.Identity.DTOs;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -20,7 +18,6 @@ namespace Adys.Service.Mapping
             CreateMap<Academician,AcademicianDto>().ReverseMap();
             CreateMap<Lesson, LessonWithAcademicianDto>().ReverseMap();
             CreateMap<Academician, LessonsOfAcademicianDto>().ReverseMap();
-            CreateMap<UserApp, UserAppDto>().ReverseMap();
         }
     }
 }

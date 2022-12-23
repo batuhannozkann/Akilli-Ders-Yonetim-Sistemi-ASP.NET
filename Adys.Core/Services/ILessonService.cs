@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Adys.Core.Services
 {
-    public interface ILessonService:IService<Lesson>
+    public interface ILessonService:IGenericRepository<Lesson>
     {
         Task<CustomResponseDto<List<LessonWithAcademicianDto>>> GetLessonsWithAcademician();
     }

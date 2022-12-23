@@ -17,7 +17,7 @@ namespace Adys.Repository.Services
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly IMapper _mapper;
-        public LessonService(IUnitOfWork unitOfWork, ILessonRepository lessonRepository,IMapper mapper,IGenericRepository<Lesson> repository) : base(repository,unitOfWork)
+        public LessonService(IGenericRepository<Lesson> genericRepository, IUnitOfWork unitOfWork, ILessonRepository lessonRepository,IMapper mapper) : base(genericRepository, unitOfWork)
         {
             _lessonRepository = lessonRepository;
             _mapper = mapper;
