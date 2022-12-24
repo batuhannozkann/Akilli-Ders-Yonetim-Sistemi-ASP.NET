@@ -11,7 +11,7 @@ namespace Adys.Core.Identity
     public class UserApp:IdentityUser
     {
         public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
         public string? Title { get; set; }
 
     }

@@ -24,7 +24,7 @@ namespace Adys.API.Controllers
         {
             var academicians = await _service.GetAllAsync();
             var academiciansDto = _mapper.Map<List<AcademicianDto>>(academicians);
-            return CreateActionResult<List<AcademicianDto>>(CustomResponseDto<List<AcademicianDto>>.Succes(200, academiciansDto));
+            return CreateActionResult(CustomResponseDto<List<AcademicianDto>>.Succes(200, academiciansDto));
 
         }
         [HttpPost]
@@ -33,12 +33,12 @@ namespace Adys.API.Controllers
             var Academician = _mapper.Map<Academician>(academicianDto);
             var addedAcademician = await _service.AddAsync(Academician);
             var addedAcademicianDto = _mapper.Map<AcademicianDto>(addedAcademician);
-            return CreateActionResult<AcademicianDto>(CustomResponseDto<AcademicianDto>.Succes(201, data: addedAcademicianDto));
+            return CreateActionResult(CustomResponseDto<AcademicianDto>.Succes(201, data: addedAcademicianDto));
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLessonsOfAcademician()
         {
-            return CreateActionResult<List<LessonsOfAcademicianDto>>(await _service.GetLessonsOfAcademician());
+            return CreateActionResult(await _service.GetLessonsOfAcademician());
         }
     }
 }

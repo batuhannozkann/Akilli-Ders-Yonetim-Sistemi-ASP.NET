@@ -1,8 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Adys.Core.Repositories
 {
     public interface IGenericRepository<T> where T : class
+    
     {
         Task<T> GetByIdAsync(int id);
         IQueryable<T> GetAll();

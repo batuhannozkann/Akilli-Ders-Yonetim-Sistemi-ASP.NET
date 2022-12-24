@@ -1,4 +1,5 @@
 ﻿using Adys.Core.Entities;
+using Adys.Repository.Configurations.ForAdys;
 using Adys.Repository.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,7 +19,10 @@ namespace Adys.Repository.Contexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfiguration(new AcademicianConfiguration());
+            modelBuilder.ApplyConfiguration(new LessonConfiguration());
+            modelBuilder.ApplyConfiguration(new LessonStudentConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentConfiguration());
             modelBuilder.SeedData();
 
 

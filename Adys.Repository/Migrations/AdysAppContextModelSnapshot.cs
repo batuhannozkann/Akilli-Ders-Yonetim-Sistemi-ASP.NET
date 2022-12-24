@@ -134,7 +134,7 @@ namespace Adys.Repository.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("LessonStudent");
+                    b.ToTable("LessonStudent", (string)null);
 
                     b.HasData(
                         new

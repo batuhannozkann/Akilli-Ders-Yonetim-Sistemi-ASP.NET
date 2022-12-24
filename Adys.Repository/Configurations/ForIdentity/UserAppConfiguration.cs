@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Configurations
+namespace Adys.Repository.Configurations.ForIdentity
 {
     public class UserAppConfiguration : IEntityTypeConfiguration<UserApp>
     {
         public void Configure(EntityTypeBuilder<UserApp> builder)
         {
-            
+
         }
     }
 }

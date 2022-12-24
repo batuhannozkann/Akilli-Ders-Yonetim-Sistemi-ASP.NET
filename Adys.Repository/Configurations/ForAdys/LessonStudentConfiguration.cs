@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Configurations
+namespace Adys.Repository.Configurations.ForAdys
 {
     public class LessonStudentConfiguration : IEntityTypeConfiguration<LessonStudent>
     {

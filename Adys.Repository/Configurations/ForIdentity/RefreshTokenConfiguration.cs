@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Configurations
+namespace Adys.Repository.Configurations.ForIdentity
 {
     public class RefreshTokenConfiguration : IEntityTypeConfiguration<UserRefreshToken>
     {

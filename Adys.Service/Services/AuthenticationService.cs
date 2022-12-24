@@ -6,6 +6,7 @@ using Adys.Core.Identity.Service;
 using Adys.Core.Repositories;
 using Adys.Core.Services;
 using Adys.Core.UnitOfWork;
+using Adys.Repository.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,16 +23,19 @@ namespace Adys.Service.Services
         private readonly List<Client> _clients;
         private readonly ITokenService _tokenService;
         private readonly UserManager<UserApp> _userManager;
+        private readonly SignInManager<UserApp> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IGenericRepository<UserRefreshToken> _userRefreshTokenService;
+        private readonly IUserRefreshTokenService _userRefreshTokenService;
 
-        public AuthenticationService(IOptions<List<Client>> clients, ITokenService tokenService, UserManager<UserApp> userManager, IUnitOfWork unitOfWork, IGenericRepository<UserRefreshToken> userRefreshTokenService)
+        public AuthenticationService(IOptions<List<Client>> clients, ITokenService tokenService, UserManager<UserApp> userManager, IUnitOfWork unitOfWork, IUserRefreshTokenService userRefreshTokenService, SignInManager<UserApp> signInManager)
         {
             _clients = clients.Value;
             _tokenService = tokenService;
             _userManager = userManager;
+            _signInManager = signInManager;
             _unitOfWork = unitOfWork;
             _userRefreshTokenService = userRefreshTokenService;
+            
         }
 
         public async Task<CustomResponseDto<TokenDto>> CreateTokenAsync(LoginDto loginDto)
@@ -74,7 +78,7 @@ namespace Adys.Service.Services
         {
             var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
             if (existRefreshToken == null) return CustomNoResponseDto.Fail(statusCode: 404, errors: new List<string> { "Refresh token not found" });
-            _userRefreshTokenService.Remove(existRefreshToken);
+            await _userRefreshTokenService.RemoveAsync(existRefreshToken);
             return CustomNoResponseDto.Succes(statusCode: 200);
         }
     }

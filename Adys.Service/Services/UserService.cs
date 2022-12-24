@@ -28,7 +28,8 @@ namespace Adys.Service.Services
             var user = new UserApp()
             {
                 Email = createUserDto.Email,
-                UserName = createUserDto.UserName
+                UserName = createUserDto.UserName,
+                FirstName = createUserDto.FirstName,
             };
             var result = await _userManager.CreateAsync(user, createUserDto.Password);
             if (!result.Succeeded)

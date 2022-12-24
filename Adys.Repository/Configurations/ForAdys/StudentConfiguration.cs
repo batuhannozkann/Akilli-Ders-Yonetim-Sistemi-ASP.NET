@@ -7,18 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adys.Repository.Configurations
+namespace Adys.Repository.Configurations.ForAdys
 {
-    public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
+    public class StudentConfiguration : IEntityTypeConfiguration<Student>
     {
-        public void Configure(EntityTypeBuilder<Lesson> builder)
+        public void Configure(EntityTypeBuilder<Student> builder)
         {
             builder
-                .ToTable("Lessons")
+                .ToTable("Students")
                 .HasKey(k => k.Id);
-            builder
-                .HasOne(h => h.Academician)
-                .WithMany(m => m.Lessons);
         }
     }
 }

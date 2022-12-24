@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Adys.Service.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService :ITokenService
     {
         private readonly UserManager<UserApp> _userManager;
         private readonly CustomTokenOption _tokenOption;
@@ -59,13 +59,13 @@ namespace Adys.Service.Services
         }
         public TokenDto CreateToken(UserApp userApp)
         {
-            var accesTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
+            var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.RefreshTokenExpiration);
             var securityKey = SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
                 issuer: _tokenOption.Issuer,
-                expires: accesTokenExpiration,
+                expires: accessTokenExpiration,
                 notBefore: DateTime.Now,
                 claims: GetClaim(userApp,
                 _tokenOption.Audience),
@@ -76,7 +76,7 @@ namespace Adys.Service.Services
             var tokenDto = new TokenDto()
             {
                 AccessToken = token,
-                AccessTokenExpiration = accesTokenExpiration,
+                AccessTokenExpiration = accessTokenExpiration,
                 RefreshToken = CreateRefreshToken(),
                 RefreshTokenExpiration = refreshTokenExpiration
             };
