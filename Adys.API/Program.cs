@@ -50,6 +50,8 @@ builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IAcademicianService, AcademicianService>();
 builder.Services.AddScoped<IAcademicianRepository, AcademicianRepository>();
+builder.Services.AddScoped(typeof(IIdentityGenericRepository<>), (typeof(IdentityGenericRepository<>)));
+builder.Services.AddScoped(typeof(IIdentityGenericService<>), typeof(IdentityGenericService<>));
 builder.Services.AddScoped<IUserRefreshTokenService, UserRefreshTokenService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();

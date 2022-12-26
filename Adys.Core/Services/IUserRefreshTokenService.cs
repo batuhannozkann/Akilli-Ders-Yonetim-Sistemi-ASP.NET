@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Adys.Core.Services
 {
-    public interface IUserRefreshTokenService:IService<UserRefreshToken>
+    public interface IUserRefreshTokenService:IIdentityGenericService<UserRefreshToken>
     {
 
     }

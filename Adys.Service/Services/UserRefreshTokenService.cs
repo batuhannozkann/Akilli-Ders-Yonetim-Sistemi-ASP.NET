@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Adys.Service.Services
 {
-    public class UserRefreshTokenService : Service<UserRefreshToken>, IUserRefreshTokenService
+    public class UserRefreshTokenService : IdentityGenericService<UserRefreshToken>, IUserRefreshTokenService
     {
-        public UserRefreshTokenService(IGenericRepository<UserRefreshToken> genericRepository, IUnitOfWork unitOfWork) : base(genericRepository, unitOfWork)
+        public UserRefreshTokenService(IIdentityGenericRepository<UserRefreshToken> genericRepository, IUnitOfWork unitOfWork) : base(genericRepository, unitOfWork)
         {
         }
     }
