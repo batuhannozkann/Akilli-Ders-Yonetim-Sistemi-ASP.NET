@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Adys.Repository.Repositories
 {
-    public class UserRefreshTokenRepository : GenericRepository<UserRefreshToken>, IGenericRepository<UserRefreshToken>
+    public class UserRefreshTokenRepository : IdentityGenericRepository<UserRefreshToken>, IIdentityGenericRepository<UserRefreshToken>
     {
-        public UserRefreshTokenRepository(AdysAppContext context) : base(context)
+        public UserRefreshTokenRepository(IdentityContext context) : base(context)
         {
-
+            
         }
     }
 }

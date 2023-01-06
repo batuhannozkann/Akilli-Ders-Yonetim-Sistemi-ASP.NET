@@ -1,5 +1,7 @@
-﻿using Adys.Core.Identity.DTOs;
+﻿using Adys.Core.DTOs;
+using Adys.Core.Identity.DTOs;
 using Adys.Core.Identity.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +22,17 @@ namespace Adys.API.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             return CreateActionResult(await _authenticationService.CreateTokenAsync(loginDto));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateTokenByRefreshToken (string refreshToken)
+        {
+            return CreateActionResult(await _authenticationService.CreateTokenByRefreshToken(refreshToken));
+        }
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> AuthValid ()
+        {
+            return Ok("Authenticated");
         }
     }
 }

@@ -12,5 +12,6 @@ namespace Adys.Core.Identity.DTOs
         public DateTime AccessTokenExpiration { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiration { get; set; }
+        public UserAppDto User { get; set; }
     }
 }

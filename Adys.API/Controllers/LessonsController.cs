@@ -2,6 +2,7 @@
 using Adys.Core.Entities;
 using Adys.Core.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace Adys.API.Controllers
             _service = lessonService;
         }
         [HttpGet]
+        [EnableCors]
         public async Task<IActionResult> All()
         {
             var lessons = await _service.GetAllAsync();

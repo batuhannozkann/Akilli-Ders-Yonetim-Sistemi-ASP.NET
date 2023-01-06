@@ -24,12 +24,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
 builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOptions"));
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+ .AddJwtBearer(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
     var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOption>();
     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
     {
@@ -42,6 +41,15 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateLifetime = true
     };
+});
+var MyAllowSpesificOrigins = "_myAllowSpesificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpesificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+        });
 });
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -56,15 +64,19 @@ builder.Services.AddScoped<IUserRefreshTokenService, UserRefreshTokenService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddIdentity<UserApp, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
     options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 8;
 }).AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddDbContext<IdentityContext>(x =>
 {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"), option =>
+    x.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString"), option =>
     {
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityContext)).GetName().Name);
     });
@@ -72,12 +84,13 @@ builder.Services.AddDbContext<IdentityContext>(x =>
 });
 builder.Services.AddDbContext<AdysAppContext>(x =>
 {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"), option =>
+    x.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString"), option =>
     {
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(AdysAppContext)).GetName().Name);
     });
 }
 );
+
 
 
 var app = builder.Build();
@@ -88,8 +101,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(MyAllowSpesificOrigins);
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

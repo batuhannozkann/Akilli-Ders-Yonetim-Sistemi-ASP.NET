@@ -13,7 +13,11 @@ namespace Adys.Repository.Configurations.ForIdentity
     {
         public void Configure(EntityTypeBuilder<UserApp> builder)
         {
-
+            builder.HasIndex(p => p.StudentNumber).IsUnique();
+            builder.Property(p => p.StudentNumber).IsRequired(false);
+            builder.Property(p => p.StudentNumber).HasMaxLength(12);
+            builder.Property(p => p.FirstName).HasMaxLength(32);
+            
         }
     }
 }

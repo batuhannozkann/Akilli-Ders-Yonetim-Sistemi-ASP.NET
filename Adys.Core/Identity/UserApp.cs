@@ -12,6 +12,7 @@ namespace Adys.Core.Identity
     {
         public string FirstName { get; set; }
         public string? LastName { get; set; }
+        public long? StudentNumber { get; set; }
         public string? Title { get; set; }
 
     }

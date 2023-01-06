@@ -11,6 +11,6 @@ namespace Adys.Core.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public long StudentNumber { get; set; }
-        public ICollection<LessonStudent> Lessons { get; set; }
+        public ICollection<LessonStudent>? Lessons { get; set; }
     }
 }

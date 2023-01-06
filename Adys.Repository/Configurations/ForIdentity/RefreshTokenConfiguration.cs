@@ -13,7 +13,7 @@ namespace Adys.Repository.Configurations.ForIdentity
     {
         public void Configure(EntityTypeBuilder<UserRefreshToken> builder)
         {
-            builder.HasKey(x => x.UserId);
+            builder.HasKey(p => p.UserId);
             builder.Property(x => x.Code).IsRequired().HasMaxLength(400);
         }
     }

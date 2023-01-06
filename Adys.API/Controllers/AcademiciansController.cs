@@ -2,6 +2,7 @@
 using Adys.Core.Entities;
 using Adys.Core.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace Adys.API.Controllers
             _service = service;
             _mapper = mapper;
         }
+        
         [HttpGet]
         public async Task<IActionResult> All()
         {
@@ -36,6 +38,7 @@ namespace Adys.API.Controllers
             return CreateActionResult(CustomResponseDto<AcademicianDto>.Succes(201, data: addedAcademicianDto));
         }
         [HttpGet("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetLessonsOfAcademician()
         {
             return CreateActionResult(await _service.GetLessonsOfAcademician());

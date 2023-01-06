@@ -7,6 +7,8 @@ using Adys.Core.Repositories;
 using Adys.Core.Services;
 using Adys.Core.UnitOfWork;
 using Adys.Repository.Contexts;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -26,9 +28,11 @@ namespace Adys.Service.Services
         private readonly SignInManager<UserApp> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRefreshTokenService _userRefreshTokenService;
+        private IMapper _mapper;
 
-        public AuthenticationService(IOptions<List<Client>> clients, ITokenService tokenService, UserManager<UserApp> userManager, IUnitOfWork unitOfWork, IUserRefreshTokenService userRefreshTokenService, SignInManager<UserApp> signInManager)
+        public AuthenticationService(IOptions<List<Client>> clients, ITokenService tokenService, UserManager<UserApp> userManager, IUnitOfWork unitOfWork, IUserRefreshTokenService userRefreshTokenService, SignInManager<UserApp> signInManager, IHttpContextAccessor context,IMapper mapper)
         {
+            _mapper = mapper;
             _clients = clients.Value;
             _tokenService = tokenService;
             _userManager = userManager;
@@ -41,18 +45,23 @@ namespace Adys.Service.Services
         public async Task<CustomResponseDto<TokenDto>> CreateTokenAsync(LoginDto loginDto)
         {
             if (loginDto == null) throw new ArgumentNullException(nameof(loginDto));
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.FindByNameAsync(loginDto.UserName);
             if (user == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 400, errors: new List<string>() { "Email or Password is wrong" });
             if (!await _userManager.CheckPasswordAsync(user, loginDto.Password)) return CustomResponseDto<TokenDto>.Fail(statusCode: 400, errors: new List<string>() { "Email or Password is wrong" });
-            var token = _tokenService.CreateToken(user);
+            TokenDto token = _tokenService.CreateToken(user);
+            UserAppDto userAppDto = _mapper.Map<UserAppDto>(user);
+            token.User = userAppDto;
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
-            if (userRefreshToken == null) await _userRefreshTokenService.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.RefreshTokenExpiration });
+            if (userRefreshToken == null) { await _userRefreshTokenService.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.RefreshTokenExpiration }); }
             else
-            {
+             {
                 userRefreshToken.Code = token.RefreshToken;
                 userRefreshToken.Expiration = token.RefreshTokenExpiration;
-            }
-            await _unitOfWork.CommitAsync();
+             }
+            await _unitOfWork.CommitAsync(); 
+            
+            
+            
             return CustomResponseDto<TokenDto>.Succes(statusCode: 200, data: token);
         }
 
@@ -67,7 +76,8 @@ namespace Adys.Service.Services
             if (existRefreshToken == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "Refresh token not found" });
             var user = await _userManager.FindByIdAsync(existRefreshToken.UserId);
             if (user == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "UserId not found" });
-            var tokenDto = _tokenService.CreateToken(user);
+            TokenDto tokenDto = _tokenService.CreateToken(user);
+            tokenDto.User = _mapper.Map<UserAppDto>(user);
             existRefreshToken.Code = tokenDto.RefreshToken;
             existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration;
             await _unitOfWork.CommitAsync();

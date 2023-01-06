@@ -14,6 +14,6 @@ namespace Adys.Core.Identity.Service
         Task<CustomResponseDto<TokenDto>>CreateTokenByRefreshToken(string refreshToken);
         Task<CustomNoResponseDto> RevokeRefreshToken(string refreshToken);
         Task<CustomResponseDto<ClientTokenDto>> CreateTokenByClient(ClientLoginDto clientLoginDto);
-
+        
     }
 }

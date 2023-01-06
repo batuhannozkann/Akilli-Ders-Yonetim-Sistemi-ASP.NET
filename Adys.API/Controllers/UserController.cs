@@ -26,5 +26,10 @@ namespace Adys.API.Controllers
         {
             return CreateActionResult(await _userService.GetUserByNameAsync(userName));
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ResetPassword(string userName)
+        {
+            return CreateActionResult(await _userService.ResetPassword(userName));
+        }
     }
 }
