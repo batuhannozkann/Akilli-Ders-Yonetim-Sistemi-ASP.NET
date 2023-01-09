@@ -34,8 +34,9 @@ namespace Adys.Service.Services
             rnd.GetBytes(numberByte);
             return Convert.ToBase64String(numberByte);
         }
-        private IEnumerable<Claim> GetClaim(UserApp userApp, List<string> audiences)
+        private async  Task<IEnumerable<Claim>> GetClaim(UserApp userApp, List<string> audiences)
         {
+            var userRoles =await _userManager.GetClaimsAsync(userApp);
             var userList = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier,userApp.Id),
@@ -45,6 +46,7 @@ namespace Adys.Service.Services
 
 
             };
+            userList.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role,x.Value)));
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
             return userList;
         }
@@ -68,7 +70,7 @@ namespace Adys.Service.Services
                 expires: accessTokenExpiration,
                 notBefore: DateTime.Now,
                 claims: GetClaim(userApp,
-                _tokenOption.Audience),
+                _tokenOption.Audience).Result,
                 signingCredentials: signingCredentials
                 );
             var handler = new JwtSecurityTokenHandler();

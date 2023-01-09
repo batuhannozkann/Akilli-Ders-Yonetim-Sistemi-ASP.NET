@@ -14,10 +14,12 @@ namespace Adys.API.Controllers
     { 
         private readonly IMapper _mapper;
         private readonly ILessonService _service;
-        public LessonsController(IMapper mapper, ILessonService lessonService)
+        private readonly ILessonStudentService _lessonStudentService;
+        public LessonsController(IMapper mapper, ILessonService lessonService, ILessonStudentService lessonStudentService)
         {
             _mapper = mapper;
             _service = lessonService;
+            _lessonStudentService = lessonStudentService;
         }
         [HttpGet]
         [EnableCors]
@@ -39,6 +41,15 @@ namespace Adys.API.Controllers
             lessonDto = _mapper.Map<LessonDto>(lesson);
             return CreateActionResult<LessonDto>(CustomResponseDto<LessonDto>.Succes(statusCode:201,data:lessonDto));
             
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddLessonsToStudent(List<LessonStudentDto> lessonStudents)
+        {
+            var lessonStudentList = _mapper.Map<List<LessonStudent>>(lessonStudents);
+            var LessonStudents = await _lessonStudentService.AddRangeAsync(lessonStudentList);
+            var lessonStudentDto = _mapper.Map<List<LessonStudentDto>>(LessonStudents);
+            return CreateActionResult<List<LessonStudentDto>>(CustomResponseDto<List<LessonStudentDto>>.Succes(statusCode: 200, data: lessonStudentDto));
+
         }
     }
 }

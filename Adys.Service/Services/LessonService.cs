@@ -29,5 +29,6 @@ namespace Adys.Service.Services
             var lessonsDto = _mapper.Map<List<LessonWithAcademicianDto>>(lessons);
             return CustomResponseDto<List<LessonWithAcademicianDto>>.Succes(statusCode: 200, data: lessonsDto);
         }
+      
     }
 }

@@ -12,6 +12,10 @@ namespace Adys.Core.Identity.Service
     {
         Task<CustomResponseDto<UserAppDto>> CreateUserAsync(CreateUserDto createUserDto);
         Task<CustomResponseDto<UserAppDto>> GetUserByNameAsync(string userName);
-        Task<CustomResponseDto<String>> ResetPassword(string userName);
+        Task<CustomResponseDto<String>> ResetPassword(string Email);
+        Task<CustomNoResponseDto> CreateUserRoles(string roleNames);
+        Task<CustomNoResponseDto> UpdatePassword(string password, string token, string userName);
+
+
     }
 }

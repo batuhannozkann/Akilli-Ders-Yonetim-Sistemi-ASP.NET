@@ -11,7 +11,7 @@ namespace Adys.Core.Identity.Service
     public interface IAuthenticationService
     {
         Task<CustomResponseDto<TokenDto>>CreateTokenAsync(LoginDto loginDto);
-        Task<CustomResponseDto<TokenDto>>CreateTokenByRefreshToken(string refreshToken);
+        Task<CustomResponseDto<TokenDto>>CreateTokenByRefreshToken(CreateTokenByRefreshTokenDto createTokenByRefreshTokenDto);
         Task<CustomNoResponseDto> RevokeRefreshToken(string refreshToken);
         Task<CustomResponseDto<ClientTokenDto>> CreateTokenByClient(ClientLoginDto clientLoginDto);
         

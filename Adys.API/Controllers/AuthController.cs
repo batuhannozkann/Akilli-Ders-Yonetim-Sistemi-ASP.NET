@@ -24,9 +24,9 @@ namespace Adys.API.Controllers
             return CreateActionResult(await _authenticationService.CreateTokenAsync(loginDto));
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateTokenByRefreshToken (string refreshToken)
+        public async Task<IActionResult> CreateTokenByRefreshToken (CreateTokenByRefreshTokenDto createTokenByRefreshTokenDto)
         {
-            return CreateActionResult(await _authenticationService.CreateTokenByRefreshToken(refreshToken));
+            return CreateActionResult(await _authenticationService.CreateTokenByRefreshToken(createTokenByRefreshTokenDto));
         }
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("[action]")]

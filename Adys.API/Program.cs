@@ -64,6 +64,10 @@ builder.Services.AddScoped<IUserRefreshTokenService, UserRefreshTokenService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<ILessonStudentRepository, LessonStudentRepository>();
+builder.Services.AddScoped<ILessonStudentService, LessonStudentService>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddIdentity<UserApp, IdentityRole>(options =>
 {

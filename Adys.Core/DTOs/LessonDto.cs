@@ -12,5 +12,6 @@ namespace Adys.Core.DTOs
         public string Description { get; set; }
         public int AcademicianId { get; set; }
         public string LessonCode { get; set; }
+       
     }
 }

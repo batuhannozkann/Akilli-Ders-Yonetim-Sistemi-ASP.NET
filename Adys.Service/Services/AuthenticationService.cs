@@ -70,9 +70,9 @@ namespace Adys.Service.Services
             throw new NotImplementedException();
         }
 
-        public async Task<CustomResponseDto<TokenDto>> CreateTokenByRefreshToken(string refreshToken)
+        public async Task<CustomResponseDto<TokenDto>> CreateTokenByRefreshToken(CreateTokenByRefreshTokenDto createTokenByRefreshTokenDto)
         {
-            var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
+            var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == createTokenByRefreshTokenDto.RefreshToken).SingleOrDefaultAsync();
             if (existRefreshToken == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "Refresh token not found" });
             var user = await _userManager.FindByIdAsync(existRefreshToken.UserId);
             if (user == null) return CustomResponseDto<TokenDto>.Fail(statusCode: 404, errors: new List<string> { "UserId not found" });

@@ -1,4 +1,5 @@
-﻿using Adys.Core.Identity.DTOs;
+﻿using Adys.Core.DTOs;
+using Adys.Core.Identity.DTOs;
 using Adys.Core.Identity.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,16 @@ namespace Adys.API.Controllers
         public async Task<IActionResult> ResetPassword(string userName)
         {
             return CreateActionResult(await _userService.ResetPassword(userName));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            return CreateActionResult(await _userService.CreateUserRoles(roleName));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordDto updatePasswordDto)
+        {
+            return CreateActionResult(await _userService.UpdatePassword(updatePasswordDto.UserName,updatePasswordDto.Token,updatePasswordDto.Password));
         }
     }
 }
