@@ -35,5 +35,6 @@ namespace Adys.Repository.Contexts
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Academician> Academicians { get; set; }
         public DbSet<LessonStudent> LessonStudent { get; set; }
+        public DbSet<LessonFile> LessonFile { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Adys.Core.DTOs;
 using Adys.Core.Identity.DTOs;
 using Adys.Core.Identity.Service;
+using Adys.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +12,23 @@ namespace Adys.API.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
+        private readonly IStudentService _studentService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IStudentService studentService)
         {
             _userService = userService;
+            _studentService = studentService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(CreateUserDto createUserDto)
         {
+           await _studentService.AddAsync(new Core.Entities.Student
+            {
+                FirstName = createUserDto.FirstName,
+                LastName = createUserDto.LastName,
+                StudentNumber = createUserDto.StudentNumber
+            });
             return CreateActionResult(await _userService.CreateUserAsync(createUserDto));
         }
         [HttpGet]
@@ -40,7 +49,7 @@ namespace Adys.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdatePassword(UpdatePasswordDto updatePasswordDto)
         {
-            return CreateActionResult(await _userService.UpdatePassword(updatePasswordDto.UserName,updatePasswordDto.Token,updatePasswordDto.Password));
+            return CreateActionResult(await _userService.UpdatePassword(updatePasswordDto.Password,updatePasswordDto.Token,updatePasswordDto.UserName));
         }
     }
 }

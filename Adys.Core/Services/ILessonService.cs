@@ -11,5 +11,7 @@ namespace Adys.Core.Services
     public interface ILessonService:IService<Lesson>
     {
         Task<CustomResponseDto<List<LessonWithAcademicianDto>>> GetLessonsWithAcademician();
+        Task<CustomResponseDto<LessonDto>> GetLesson(int id);
+        Task<CustomResponseDto<List<LessonDto>>> GetAllLessonWithFiles();
     }
 }

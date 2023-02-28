@@ -10,16 +10,18 @@ namespace Adys.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LessonsController : BaseController
-    { 
+    public class LessonController : BaseController
+    {
         private readonly IMapper _mapper;
         private readonly ILessonService _service;
         private readonly ILessonStudentService _lessonStudentService;
-        public LessonsController(IMapper mapper, ILessonService lessonService, ILessonStudentService lessonStudentService)
+        private readonly ILessonFileService _lessonFileService;
+        public LessonController(IMapper mapper, ILessonService lessonService, ILessonStudentService lessonStudentService, ILessonFileService lessonFileService)
         {
             _mapper = mapper;
             _service = lessonService;
             _lessonStudentService = lessonStudentService;
+            _lessonFileService = lessonFileService;
         }
         [HttpGet]
         [EnableCors]
@@ -39,8 +41,8 @@ namespace Adys.API.Controllers
         {
             var lesson = await _service.AddAsync(_mapper.Map<Lesson>(lessonDto));
             lessonDto = _mapper.Map<LessonDto>(lesson);
-            return CreateActionResult<LessonDto>(CustomResponseDto<LessonDto>.Succes(statusCode:201,data:lessonDto));
-            
+            return CreateActionResult<LessonDto>(CustomResponseDto<LessonDto>.Succes(statusCode: 201, data: lessonDto));
+
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> AddLessonsToStudent(List<LessonStudentDto> lessonStudents)
@@ -51,5 +53,27 @@ namespace Adys.API.Controllers
             return CreateActionResult<List<LessonStudentDto>>(CustomResponseDto<List<LessonStudentDto>>.Succes(statusCode: 200, data: lessonStudentDto));
 
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLesson(int id)
+        {
+            return CreateActionResult(await _service.GetLesson(id));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddFileToLesson([FromBody] AddLessonFileDto? lessonFileDto)
+        {
+            if (lessonFileDto.FileName == "") return CreateActionResult(CustomNoResponseDto.Fail(400, "File is required"));
+            return CreateActionResult(await _lessonFileService.AddFileAsync(lessonFileDto));
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllLessonWithFiles()
+        {
+            return CreateActionResult(await _service.GetAllLessonWithFiles());
+        }
+        [HttpPost("[action]")]
+        public  IActionResult DeleteFile(DeleteFileDto deleteFileDto)
+        {
+            return CreateActionResult(_lessonFileService.DeleteFile(deleteFileDto));
+        }
+        
     }
 }

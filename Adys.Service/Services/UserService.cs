@@ -4,6 +4,7 @@ using Adys.Core.Identity.DTOs;
 using Adys.Core.Identity.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Net.Mail;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Adys.Service.Services
 {
@@ -72,7 +74,9 @@ namespace Adys.Service.Services
             mailMessage.To.Add(user.Email);
             mailMessage.From = new MailAddress("batu.besiktas@live.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
             mailMessage.Subject = "Şifre Güncelleme";
-            mailMessage.Body = $"Şifrenizi Sıfırlamak için <a href='http://localhost:3000/SifremiSifirla/{resetToken}/{user.UserName}'>Tıklayınız</a>";
+            var encodedToken = Encoding.UTF8.GetBytes(resetToken);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+            mailMessage.Body = $"Şifrenizi Sıfırlamak için <a href='http://localhost:3000/SifremiSifirla/{validEmailToken}/{user.UserName}'>Tıklayınız</a>";
             mailMessage.IsBodyHtml = true;
             SmtpClient smp = new SmtpClient();
             smp.Credentials = new NetworkCredential("batu.besiktas@live.com", "02042503900");
@@ -87,7 +91,10 @@ namespace Adys.Service.Services
         public async Task<CustomNoResponseDto> UpdatePassword(string password,string token,string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var result = await _userManager.ResetPasswordAsync(user, token, password);
+            if (user == null) throw new Exception("User not found");
+            var decodeToken = WebEncoders.Base64UrlDecode(token);
+            var decodedToken = Encoding.UTF8.GetString(decodeToken);
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, password);
             if(result.Succeeded)
             {
                 await _userManager.UpdateSecurityStampAsync(user);

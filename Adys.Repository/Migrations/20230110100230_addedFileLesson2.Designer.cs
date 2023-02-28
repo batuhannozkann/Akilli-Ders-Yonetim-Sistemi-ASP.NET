@@ -4,6 +4,7 @@ using Adys.Repository.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adys.Repository.Migrations
 {
     [DbContext(typeof(AdysAppContext))]
-    partial class AdysAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230110100230_addedFileLesson2")]
+    partial class addedFileLesson2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,7 +141,7 @@ namespace Adys.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LessonId")
+                    b.Property<int?>("LessonId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -229,13 +232,9 @@ namespace Adys.Repository.Migrations
 
             modelBuilder.Entity("Adys.Core.Entities.LessonFile", b =>
                 {
-                    b.HasOne("Adys.Core.Entities.Lesson", "Lesson")
+                    b.HasOne("Adys.Core.Entities.Lesson", null)
                         .WithMany("LessonFiles")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lesson");
+                        .HasForeignKey("LessonId");
                 });
 
             modelBuilder.Entity("Adys.Core.Entities.LessonStudent", b =>

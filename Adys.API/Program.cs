@@ -68,7 +68,10 @@ builder.Services.AddScoped<ILessonStudentRepository, LessonStudentRepository>();
 builder.Services.AddScoped<ILessonStudentService, LessonStudentService>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ILessonFileRepository, LessonFileRepository>();
+builder.Services.AddScoped<ILessonFileService, LessonFileService>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddIdentity<UserApp, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
