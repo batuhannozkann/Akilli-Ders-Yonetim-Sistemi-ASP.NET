@@ -74,6 +74,12 @@ namespace Adys.API.Controllers
         {
             return CreateActionResult(_lessonFileService.DeleteFile(deleteFileDto));
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateLesson (LessonUpdateDto lessonUpdateDto)
+        {
+            if (lessonUpdateDto == null) CreateActionResult(CustomNoResponseDto.Fail(401, "Hatalı Gönderim"));
+            return CreateActionResult(_service.EditLesson(lessonUpdateDto));
+        }
         
     }
 }

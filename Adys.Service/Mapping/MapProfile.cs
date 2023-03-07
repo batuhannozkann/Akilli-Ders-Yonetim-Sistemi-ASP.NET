@@ -28,6 +28,7 @@ namespace Adys.Service.Mapping
             CreateMap<Student, LessonWithStudentsDto>().ReverseMap();
             CreateMap<Lesson, LessonDto>().ReverseMap();
             CreateMap<AddLessonFileDto, LessonFile>().ReverseMap();
+            CreateMap<Lesson, LessonUpdateDto>().ReverseMap();
         }
     }
 }

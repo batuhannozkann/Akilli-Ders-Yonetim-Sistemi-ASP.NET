@@ -44,7 +44,17 @@ namespace Adys.Service.Services
             var lessonsDto = _mapper.Map<List<LessonWithAcademicianDto>>(lessons);
             return CustomResponseDto<List<LessonWithAcademicianDto>>.Succes(statusCode: 200, data: lessonsDto);
         }
-  
+        public  CustomResponseDto<LessonDto> EditLesson(LessonUpdateDto lessonUpdateDto)
+        {
+            var lesson = _lessonRepository.GetAll().Where(x => x.LessonCode == lessonUpdateDto.LessonCode).FirstOrDefault();
+            lessonUpdateDto.Id = lesson.Id;
+            Lesson updatedLesson = _mapper.Map<Lesson>(lessonUpdateDto);
+            _lessonRepository.Update(updatedLesson);
+            _unitOfWork.Commit();
+            LessonDto updatedLessonDto = _mapper.Map<LessonDto>(updatedLesson);
+            return CustomResponseDto<LessonDto>.Succes(statusCode: 200, data: updatedLessonDto);
+
+        }
 
 
     }

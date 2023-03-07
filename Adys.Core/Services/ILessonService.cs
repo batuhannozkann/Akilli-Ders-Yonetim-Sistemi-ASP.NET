@@ -13,5 +13,6 @@ namespace Adys.Core.Services
         Task<CustomResponseDto<List<LessonWithAcademicianDto>>> GetLessonsWithAcademician();
         Task<CustomResponseDto<LessonDto>> GetLesson(int id);
         Task<CustomResponseDto<List<LessonDto>>> GetAllLessonWithFiles();
+        CustomResponseDto<LessonDto> EditLesson(LessonUpdateDto lessonUpdateDto);
     }
 }
