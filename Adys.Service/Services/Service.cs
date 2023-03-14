@@ -52,10 +52,12 @@ namespace Adys.Service.Services
             return await _genericRepository.GetByIdAsync(id);
         }
 
-        public async Task RemoveAsync(T entity)
+        public async Task<T> RemoveAsync(T entity)
         {
+            if (entity == null) throw new Exception("Entity doesn't exist");
             _genericRepository.Remove(entity);
             await _unitOfWork.CommitAsync();
+            return entity;
         }
 
         public async Task RemoveRangeAsync(IEnumerable<T> entities)

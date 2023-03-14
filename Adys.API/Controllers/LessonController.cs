@@ -80,6 +80,14 @@ namespace Adys.API.Controllers
             if (lessonUpdateDto == null) CreateActionResult(CustomNoResponseDto.Fail(401, "Hatalı Gönderim"));
             return CreateActionResult(_service.EditLesson(lessonUpdateDto));
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteLesson (LessonDeleteDto lessonDeleteDto)
+        {
+            var lesson=_service.Where(x => x.Id == lessonDeleteDto.Id).FirstOrDefault();
+            var deletedLesson = await _service.RemoveAsync(lesson);
+            var deletedLessonDto = _mapper.Map<LessonDto>(lesson);
+            return CreateActionResult(CustomResponseDto<LessonDto>.Succes(200,deletedLessonDto));
+        }
         
     }
 }

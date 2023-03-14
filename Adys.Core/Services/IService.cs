@@ -10,7 +10,7 @@ namespace Adys.Core.Services
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task<T> AddAsync(T entity);
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
-        Task RemoveAsync(T entity);
+        Task<T> RemoveAsync(T entity);
         Task RemoveRangeAsync(IEnumerable<T> entities);
         Task UpdateAsync(T entity);
     }
