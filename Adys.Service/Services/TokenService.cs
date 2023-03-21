@@ -36,7 +36,7 @@ namespace Adys.Service.Services
         }
         private async  Task<IEnumerable<Claim>> GetClaim(UserApp userApp, List<string> audiences)
         {
-            var userRoles =await _userManager.GetClaimsAsync(userApp);
+            var userRoles =await _userManager.GetRolesAsync(userApp);
             var userList = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier,userApp.Id),
@@ -46,7 +46,7 @@ namespace Adys.Service.Services
 
 
             };
-            userList.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role,x.Value)));
+            userList.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role,x)));
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
             return userList;
         }

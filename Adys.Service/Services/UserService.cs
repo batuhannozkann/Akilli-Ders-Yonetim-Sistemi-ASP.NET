@@ -38,7 +38,7 @@ namespace Adys.Service.Services
                 UserName = createUserDto.StudentNumber.ToString(),
                 FirstName = createUserDto.FirstName,
                 LastName = createUserDto.LastName,
-                StudentNumber= createUserDto.StudentNumber,
+                StudentNumber = createUserDto.StudentNumber,
             };
             var result = await _userManager.CreateAsync(user, createUserDto.Password);
             if (!result.Succeeded)
@@ -54,7 +54,7 @@ namespace Adys.Service.Services
         public async Task<CustomNoResponseDto> CreateUserRoles(string roleNames)
         {
             if (await _roleManager.RoleExistsAsync(roleNames)) return CustomNoResponseDto.Fail(412, "Your added role is exist");
-            await _roleManager.CreateAsync(new IdentityRole { Name=roleNames});
+            await _roleManager.CreateAsync(new IdentityRole { Name = roleNames });
             return CustomNoResponseDto.Succes(statusCode: 200);
         }
 
@@ -87,20 +87,55 @@ namespace Adys.Service.Services
             smp.Send(mailMessage);
             return CustomResponseDto<String>.Succes(statusCode: 200, data: resetToken);
         }
-        
-        public async Task<CustomNoResponseDto> UpdatePassword(string password,string token,string userName)
+
+        public async Task<CustomNoResponseDto> UpdatePassword(string password, string token, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null) throw new Exception("User not found");
             var decodeToken = WebEncoders.Base64UrlDecode(token);
             var decodedToken = Encoding.UTF8.GetString(decodeToken);
             var result = await _userManager.ResetPasswordAsync(user, decodedToken, password);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 await _userManager.UpdateSecurityStampAsync(user);
             }
             return CustomNoResponseDto.Succes(200);
         }
+        public async Task<CustomResponseDto<IList<UserApp>>> GetAllUsers()
+        {
+            var userList = _userManager.Users.ToList();
+            return CustomResponseDto<IList<UserApp>>.Succes(200, userList);
+        }
+        public CustomResponseDto<IList<IdentityRole>> GetAllRoles()
+        {
+            var roleList = _roleManager.Roles.ToList();
+            return CustomResponseDto<IList<IdentityRole>>.Succes(200, roleList);
+        }
+        public async Task<CustomResponseDto<IList<String>>> GetUserRolesAsync(string id)
+        {
+            var user = _userManager.Users.Where(x => x.Id == id).FirstOrDefault();
+            if (user == null) throw new Exception("User doesn't exist");
+            var userRoleList = await _userManager.GetRolesAsync(user);
+            return CustomResponseDto<IList<String>>.Succes(200, userRoleList);
+
+        }
+        public async Task<CustomNoResponseDto> ClaimRoleToUser(IList<string> roleId,string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) throw new Exception("User doesn't exist");
+            List<IdentityRole> userRoleList = new List<IdentityRole>();
+            foreach(var i in roleId)
+            {
+                userRoleList.Add(await _roleManager.FindByIdAsync(i));
+            }
+            if (userRoleList == null) throw new Exception("Role doesn't exist");
+            await _userManager.AddToRolesAsync(user, userRoleList.Select(x => x.Name));
+            return CustomNoResponseDto.Succes(201);
+        }
+          
+            
+
+
     
            
     }

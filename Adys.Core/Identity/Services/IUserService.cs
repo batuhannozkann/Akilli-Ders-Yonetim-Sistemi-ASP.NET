@@ -1,5 +1,6 @@
 ﻿using Adys.Core.DTOs;
 using Adys.Core.Identity.DTOs;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,10 @@ namespace Adys.Core.Identity.Service
         Task<CustomResponseDto<String>> ResetPassword(string Email);
         Task<CustomNoResponseDto> CreateUserRoles(string roleNames);
         Task<CustomNoResponseDto> UpdatePassword(string password, string token, string userName);
-
+        Task<CustomResponseDto<IList<UserApp>>> GetAllUsers();
+        CustomResponseDto<IList<IdentityRole>> GetAllRoles();
+        Task<CustomResponseDto<IList<String>>> GetUserRolesAsync(string id);
+        Task<CustomNoResponseDto> ClaimRoleToUser(IList<string> roleId, string userId);
 
     }
 }

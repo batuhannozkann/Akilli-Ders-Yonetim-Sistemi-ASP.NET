@@ -51,5 +51,27 @@ namespace Adys.API.Controllers
         {
             return CreateActionResult(await _userService.UpdatePassword(updatePasswordDto.Password,updatePasswordDto.Token,updatePasswordDto.UserName));
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            return CreateActionResult(await _userService.GetAllUsers());
+        }
+        [HttpGet("[action]")]
+        public IActionResult GetAllRoles()
+        {
+            return CreateActionResult(_userService.GetAllRoles());
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetUserRolesAsync(UserIdDto userId)
+        {
+            return CreateActionResult(await _userService.GetUserRolesAsync(userId.UserId));
+        }
+        [HttpPost("[action]")]
+        
+        public async Task<IActionResult> ClaimRoleToUser(ClaimRoleDto claimRoleDto)
+        {
+            return CreateActionResult(await _userService.ClaimRoleToUser(claimRoleDto.RoleIds,claimRoleDto.UserId));
+        }
+       
     }
 }
