@@ -51,6 +51,7 @@ namespace Adys.Service.Services
             TokenDto token = _tokenService.CreateToken(user);
             UserAppDto userAppDto = _mapper.Map<UserAppDto>(user);
             token.User = userAppDto;
+            token.RoleList = await _userManager.GetRolesAsync(user);
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
             if (userRefreshToken == null) { await _userRefreshTokenService.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.RefreshTokenExpiration }); }
             else

@@ -5,6 +5,7 @@ using Adys.Core.Identity.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,6 +132,16 @@ namespace Adys.Service.Services
             if (userRoleList == null) throw new Exception("Role doesn't exist");
             await _userManager.AddToRolesAsync(user, userRoleList.Select(x => x.Name));
             return CustomNoResponseDto.Succes(201);
+        }
+        public async Task<CustomNoResponseDto> DeleteRoleFromUser(string role,string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.RemoveFromRoleAsync(user, role);
+            if(result.Succeeded)
+            {
+                return CustomNoResponseDto.Succes(201);
+            }
+            return CustomNoResponseDto.Fail(400, "Error");
         }
           
             

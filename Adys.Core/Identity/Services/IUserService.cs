@@ -20,6 +20,7 @@ namespace Adys.Core.Identity.Service
         CustomResponseDto<IList<IdentityRole>> GetAllRoles();
         Task<CustomResponseDto<IList<String>>> GetUserRolesAsync(string id);
         Task<CustomNoResponseDto> ClaimRoleToUser(IList<string> roleId, string userId);
+        Task<CustomNoResponseDto> DeleteRoleFromUser(string role, string userId);
 
     }
 }

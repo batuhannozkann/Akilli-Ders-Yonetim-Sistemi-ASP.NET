@@ -2,9 +2,11 @@
 using Adys.Core.Entities;
 using Adys.Core.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Adys.API.Controllers
 {
@@ -37,6 +39,7 @@ namespace Adys.API.Controllers
             return CreateActionResult<List<LessonWithAcademicianDto>>(await _service.GetLessonsWithAcademician());
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> Add(LessonDto lessonDto)
         {
             var lesson = await _service.AddAsync(_mapper.Map<Lesson>(lessonDto));
@@ -45,6 +48,7 @@ namespace Adys.API.Controllers
 
         }
         [HttpPost("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> AddLessonsToStudent(List<LessonStudentDto> lessonStudents)
         {
             var lessonStudentList = _mapper.Map<List<LessonStudent>>(lessonStudents);
@@ -54,33 +58,39 @@ namespace Adys.API.Controllers
 
         }
         [HttpGet("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> GetLesson(int id)
         {
             return CreateActionResult(await _service.GetLesson(id));
         }
         [HttpPost("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> AddFileToLesson([FromBody] AddLessonFileDto? lessonFileDto)
         {
             if (lessonFileDto.FileName == "") return CreateActionResult(CustomNoResponseDto.Fail(400, "File is required"));
             return CreateActionResult(await _lessonFileService.AddFileAsync(lessonFileDto));
         }
         [HttpGet("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> GetAllLessonWithFiles()
         {
             return CreateActionResult(await _service.GetAllLessonWithFiles());
         }
         [HttpPost("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public  IActionResult DeleteFile(DeleteFileDto deleteFileDto)
         {
             return CreateActionResult(_lessonFileService.DeleteFile(deleteFileDto));
         }
         [HttpPost("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> UpdateLesson (LessonUpdateDto lessonUpdateDto)
         {
             if (lessonUpdateDto == null) CreateActionResult(CustomNoResponseDto.Fail(401, "Hatalı Gönderim"));
             return CreateActionResult(_service.EditLesson(lessonUpdateDto));
         }
         [HttpPost("[action]")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         public async Task<IActionResult> DeleteLesson (LessonDeleteDto lessonDeleteDto)
         {
             var lesson=_service.Where(x => x.Id == lessonDeleteDto.Id).FirstOrDefault();

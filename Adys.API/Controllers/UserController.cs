@@ -2,11 +2,14 @@
 using Adys.Core.Identity.DTOs;
 using Adys.Core.Identity.Service;
 using Adys.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Adys.API.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : BaseController
@@ -72,6 +75,10 @@ namespace Adys.API.Controllers
         {
             return CreateActionResult(await _userService.ClaimRoleToUser(claimRoleDto.RoleIds,claimRoleDto.UserId));
         }
-       
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteRoleFromUser(DeleteRoleFromUserDto deleteRoleFromUserDto)
+        {
+            return CreateActionResult(await _userService.DeleteRoleFromUser(deleteRoleFromUserDto.Role, deleteRoleFromUserDto.UserId));
+        }
     }
 }

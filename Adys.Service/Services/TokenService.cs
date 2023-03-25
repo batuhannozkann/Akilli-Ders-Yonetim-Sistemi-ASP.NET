@@ -77,6 +77,7 @@ namespace Adys.Service.Services
             var token = handler.WriteToken(jwtSecurityToken);
             var tokenDto = new TokenDto()
             {
+                
                 AccessToken = token,
                 AccessTokenExpiration = accessTokenExpiration,
                 RefreshToken = CreateRefreshToken(),
