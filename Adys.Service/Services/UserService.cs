@@ -80,7 +80,7 @@ namespace Adys.Service.Services
             mailMessage.Body = $"Şifrenizi Sıfırlamak için <a href='http://localhost:3000/SifremiSifirla/{validEmailToken}/{user.UserName}'>Tıklayınız</a>";
             mailMessage.IsBodyHtml = true;
             SmtpClient smp = new SmtpClient();
-            smp.Credentials = new NetworkCredential("batu.besiktas@live.com", "02042503900");
+            smp.Credentials = new NetworkCredential("batu.besiktas@live.com", "");
             smp.Port = 587;
             smp.Host = "smtp.office365.com";
             smp.UseDefaultCredentials = false;
