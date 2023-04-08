@@ -9,7 +9,7 @@ using System.Net;
 
 namespace Adys.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : BaseController
@@ -80,5 +80,21 @@ namespace Adys.API.Controllers
         {
             return CreateActionResult(await _userService.DeleteRoleFromUser(deleteRoleFromUserDto.Role, deleteRoleFromUserDto.UserId));
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetUserById (string id)
+        {
+            return CreateActionResult(await _userService.GetUserById(id));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateUserInfos(UserAppDto userAppDto)
+        {
+            return CreateActionResult(await _userService.EditUserInfo(userAppDto));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteUser (UserAppDto userAppDto)
+        {
+            return CreateActionResult(await _userService.DeleteUser(userAppDto));
+        }
+        
     }
 }

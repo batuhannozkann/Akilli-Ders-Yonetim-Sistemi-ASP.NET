@@ -143,6 +143,37 @@ namespace Adys.Service.Services
             }
             return CustomNoResponseDto.Fail(400, "Error");
         }
+        public async Task<CustomResponseDto<UserAppDto>> GetUserById(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var userAppDto = new UserAppDto();
+            userAppDto.FirstName = user.FirstName;
+            userAppDto.Id = id;
+            userAppDto.LastName = user.LastName;
+
+            return CustomResponseDto<UserAppDto>.Succes(200,userAppDto);
+        }
+        public async Task<CustomResponseDto<UserAppDto>> EditUserInfo(UserAppDto userAppDto)
+        {
+            var user = await _userManager.FindByIdAsync(userAppDto.Id);
+            if (userAppDto.FirstName == null && userAppDto.LastName == null) return CustomResponseDto<UserAppDto>.Fail(400, "Fields are required");
+            user.FirstName = userAppDto.FirstName;
+            user.LastName = userAppDto.LastName;
+            await _userManager.UpdateAsync(user);
+            return CustomResponseDto<UserAppDto>.Succes(201,userAppDto);
+        }
+        public async Task<CustomResponseDto<UserApp>> DeleteUser(UserAppDto userAppDto)
+        {
+            var user = await _userManager.FindByIdAsync(userAppDto.Id);
+            if (user == null) return CustomResponseDto<UserApp>.Fail(400, "User doesn't exist");
+            var result = await _userManager.DeleteAsync(user);
+            if(result.Succeeded)
+            {
+                return CustomResponseDto<UserApp>.Succes(201, user);
+            }
+            return CustomResponseDto<UserApp>.Fail(400, "user can't delete");
+             
+        }
           
             
 
